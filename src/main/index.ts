@@ -1,4 +1,5 @@
 import appInit from './init';
+import Shelf from './services/shelf';
 
 // initialize electron application
 appInit();
@@ -8,3 +9,5 @@ appInit();
 // generator backing service
 
 // converter backing service
+
+const shelf = new Shelf();
