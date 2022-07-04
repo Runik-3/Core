@@ -1,15 +1,31 @@
 <template>
 	<main>
-		<p class="font-header">Taco</p>
-		<logo />
+		<h1 class="font-header text-3xl font-semibold">Library</h1>
+		<!-- separate into list and list item components -->
+		<ul v-if="library !== []">
+			<li v-for="dict in library" :key="dict">
+				{{ dict }}
+			</li>
+		</ul>
+		<p v-else>nothing here</p>
 	</main>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import Logo from '../components/icons/Logo.vue';
 
 export default defineComponent({
-	components: { Logo },
+	data(): {
+		library: Array<string>;
+	} {
+		return {
+			library: [],
+		};
+	},
+
+	async beforeMount() {
+		const data: string[] = await window.ipcRenderer.invoke('getLibrary');
+		this.library = [...data];
+	},
 });
 </script>
