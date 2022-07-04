@@ -2,7 +2,7 @@
 	<main>
 		<h1 class="font-header text-3xl font-semibold">Library</h1>
 		<!-- separate into list and list item components -->
-		<ul v-if="library !== []">
+		<ul v-if="library.length !== 0">
 			<li @click="getDict(dict)" v-for="dict in library" :key="dict">
 				{{ dict }}
 			</li>
@@ -16,7 +16,7 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
 	data(): {
-		library: Array<string>;
+		library: string[];
 	} {
 		return {
 			library: [],
