@@ -22,10 +22,25 @@ export default class Shelf {
 		console.log(this._library);
 	}
 
+	// new library entry
+
 	async getDictionaryContent(dictName: string) {
 		const dictionaryPath = path.join(this._dictPath, dictName);
-		const dictContents = await fs.readFile(dictionaryPath, 'utf-8');
-		return dictContents;
+		try {
+			return await fs.readFile(dictionaryPath, 'utf-8');
+		} catch (error) {
+			return error;
+		}
+	}
+
+	async writeDictionaryContent(dictName: string, data: string) {
+		const dictionaryPath = path.join(this._dictPath, dictName);
+		try {
+			await fs.writeFile(dictionaryPath, data, 'utf-8');
+			return true;
+		} catch (error) {
+			return error;
+		}
 	}
 
 	async listen() {
