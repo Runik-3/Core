@@ -17,7 +17,11 @@ export default class Shelf {
 	}
 
 	async loadLibrary() {
-		const localDictionaries = await fs.readdir(this._dictPath);
+		const localDictionaries = (await fs.readdir(this._dictPath)).filter(
+			dict => {
+				return dict.toLowerCase().includes('.xdxf');
+			},
+		);
 		this._library = [...localDictionaries];
 		console.log(this._library);
 	}
