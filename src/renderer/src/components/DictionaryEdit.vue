@@ -1,6 +1,6 @@
 <template>
 	<ul>
-		<li v-for="(def, word) in dictionaryData">
+		<li v-for="(def, word) in dictionaryData" :key="word">
 			<span class="font-bold">{{ word }}</span
 			>{{ ' -- ' }}
 			<span>{{ def }}</span>
