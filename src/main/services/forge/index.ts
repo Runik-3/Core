@@ -3,7 +3,7 @@
 import { ipcMain } from 'electron';
 import Parser from '../Parser';
 import type Shelf from '../shelf';
-import type { DictionaryObject } from '../../../typings/types';
+import type { DictionaryObject } from '../../../typings/dictionary';
 
 export default class Forge {
 	shelf: Shelf;

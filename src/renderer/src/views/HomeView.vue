@@ -3,27 +3,31 @@
 		<h1 class="font-header text-3xl font-semibold">Library</h1>
 		<!-- separate into list and list item components -->
 		<div v-if="!selectedDictionary">
-			<ul class="space-y-2" v-if="library.length !== 0">
-				<LibraryListItem
+			<List v-if="library.length !== 0">
+				<ListItem
 					@click="getDict(dict)"
 					v-for="dict in library"
 					:key="dict"
 					:title="dict"
 				/>
-			</ul>
+			</List>
 			<p v-else>nothing here</p>
 		</div>
 		<div v-else>
-			<DictionaryEdit :dictionaryData="selectedDictionary" />
+			<DictionaryEdit
+				@closeDict="closeDictionaryEditor"
+				:dictionaryData="selectedDictionary"
+			/>
 		</div>
 	</main>
 </template>
 
 <script lang="ts">
-import type { DictionaryObject } from '@/typings/types';
+import type { DictionaryObject } from '@/typings/dictionary';
 import { defineComponent } from 'vue';
-import LibraryListItem from '../components/LibraryListItem.vue';
+import ListItem from '../components/ListItem.vue';
 import DictionaryEdit from '../components/DictionaryEdit.vue';
+import List from '../components/List.vue';
 
 export default defineComponent({
 	data(): {
@@ -53,8 +57,12 @@ export default defineComponent({
 		dictionaryEdit(dictData: DictionaryObject) {
 			this.selectedDictionary = dictData;
 		},
+
+		closeDictionaryEditor() {
+			this.selectedDictionary = undefined;
+		},
 	},
 
-	components: { LibraryListItem, DictionaryEdit },
+	components: { ListItem, DictionaryEdit, List },
 });
 </script>
