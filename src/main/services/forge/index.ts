@@ -1,6 +1,7 @@
 // service for handling any forge actions, including the editing of dictionaries
 
 import { ipcMain } from 'electron';
+import Parser from '../Parser';
 import type Shelf from '../shelf';
 
 export default class Forge {
@@ -15,10 +16,10 @@ export default class Forge {
 	}
 
 	async getParsedDictionaryObject(dictName: string) {
-		const dictData = await this.shelf.getDictionaryContent(dictName);
-		// xdxf parser logic
-		console.log(dictData);
-		return dictData;
+		const dict = await this.shelf.getDictionaryContent(dictName);
+		const parsedDict = Parser.fromXdxf(dict);
+		console.log(parsedDict);
+		return parsedDict;
 	}
 
 	async listen() {

@@ -28,12 +28,12 @@ export default class Shelf {
 
 	// new library entry
 
-	async getDictionaryContent(dictName: string) {
+	async getDictionaryContent(dictName: string): Promise<string> {
 		const dictionaryPath = path.join(this._dictPath, dictName);
 		try {
 			return await fs.readFile(dictionaryPath, 'utf-8');
-		} catch (error) {
-			return error;
+		} catch {
+			throw new Error('Unable to read dictionary contents.');
 		}
 	}
 
