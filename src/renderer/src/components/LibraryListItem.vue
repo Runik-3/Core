@@ -1,5 +1,5 @@
 <template>
-	<li>
+	<li class="border border-gray-300 rounded cursor-pointer">
 		{{ title }}
 	</li>
 </template>

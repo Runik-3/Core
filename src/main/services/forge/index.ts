@@ -3,7 +3,7 @@
 import { ipcMain } from 'electron';
 import Parser from '../Parser';
 import type Shelf from '../shelf';
-import type { DictionaryObject } from './types';
+import type { DictionaryObject } from '../../../typings/types';
 
 export default class Forge {
 	shelf: Shelf;
@@ -18,18 +18,18 @@ export default class Forge {
 		await this.listen();
 	}
 
-	async getDictionary(dictName: string): Promise<DictionaryObject> {
+	async getDictionary(dictName: string) {
 		if (this.cachedDict[dictName]) {
-			return this.cachedDict;
+			return this.cachedDict[dictName];
 		}
 		const dict = await this.shelf.getDictionaryContent(dictName);
 		const parsedDefs = Parser.fromXdxf(dict);
 		const parsedDict: DictionaryObject = {};
-		parsedDict[dictName] = parsedDefs;
 
+		parsedDict[dictName] = parsedDefs;
 		this.cachedDict[dictName] = parsedDefs;
 
-		return parsedDict;
+		return parsedDict[dictName];
 	}
 
 	async listen() {

@@ -2,32 +2,39 @@
 	<main>
 		<h1 class="font-header text-3xl font-semibold">Library</h1>
 		<!-- separate into list and list item components -->
-		<ul v-if="library.length !== 0">
-			<LibraryListItem
-				@click="getDict(dict)"
-				v-for="dict in library"
-				:key="dict"
-				:title="dict"
-			/>
-		</ul>
-		<p v-else>nothing here</p>
+		<div v-if="!selectedDictionary">
+			<ul class="space-y-2" v-if="library.length !== 0">
+				<LibraryListItem
+					@click="getDict(dict)"
+					v-for="dict in library"
+					:key="dict"
+					:title="dict"
+				/>
+			</ul>
+			<p v-else>nothing here</p>
+		</div>
+		<div v-else>
+			<DictionaryEdit :dictionaryData="selectedDictionary" />
+		</div>
 	</main>
 </template>
 
 <script lang="ts">
+import type { DictionaryObject } from '@/typings/types';
 import { defineComponent } from 'vue';
 import LibraryListItem from '../components/LibraryListItem.vue';
+import DictionaryEdit from '../components/DictionaryEdit.vue';
 
 export default defineComponent({
 	data(): {
 		library: string[];
+		selectedDictionary?: DictionaryObject;
 	} {
 		return {
 			library: [],
+			selectedDictionary: undefined,
 		};
 	},
-
-	components: { LibraryListItem },
 
 	async beforeMount() {
 		const data: string[] = await window.ipcRenderer.invoke('getLibrary');
@@ -40,8 +47,14 @@ export default defineComponent({
 				'forgeGetDict',
 				dictName,
 			);
-			console.log(dictData);
+			this.dictionaryEdit(dictData);
+		},
+
+		dictionaryEdit(dictData: DictionaryObject) {
+			this.selectedDictionary = dictData;
 		},
 	},
+
+	components: { LibraryListItem, DictionaryEdit },
 });
 </script>
