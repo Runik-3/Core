@@ -3,9 +3,9 @@ import Parser from '../../src/main/services/Parser/index';
 describe('Parser', () => {
 	test('Sanitize XDXF string.', () => {
 		const xdxfText = `<ar><k>Abessiniër</k>
-Abyssinian</ar>
-<ar><k>Achilles</k>
-Achilles</ar>`;
+			Abyssinian</ar>
+			<ar><k>Achilles</k>
+			Achilles</ar>`;
 		const parsedText = Parser.sanitizeXdxf(xdxfText);
 		expect(parsedText).toBe(
 			'<ar><k>Abessiniër</k>Abyssinian</ar><ar><k>Achilles</k>Achilles</ar>',

@@ -2,11 +2,9 @@
 
 export default class Parser {
 	static fromXdxf(dictContents: string) {
-		// <ar><k>Afrika</k>Africa</ar>
 		const parsedDefinitions: { [key: string]: string } = {};
 
 		const sanitizedString = Parser.sanitizeXdxf(dictContents);
-		console.log(sanitizedString);
 
 		const definitions = Array.from(
 			sanitizedString.matchAll(/(<ar>).*?(<\/ar>)/gi),

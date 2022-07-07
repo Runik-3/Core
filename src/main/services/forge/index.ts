@@ -3,9 +3,12 @@
 import { ipcMain } from 'electron';
 import Parser from '../Parser';
 import type Shelf from '../shelf';
+import type { DictionaryObject } from './types';
 
 export default class Forge {
 	shelf: Shelf;
+
+	cachedDict: DictionaryObject = {};
 
 	constructor(shelf: Shelf) {
 		this.shelf = shelf;
@@ -15,16 +18,23 @@ export default class Forge {
 		await this.listen();
 	}
 
-	async getParsedDictionaryObject(dictName: string) {
+	async getDictionary(dictName: string): Promise<DictionaryObject> {
+		if (this.cachedDict[dictName]) {
+			return this.cachedDict;
+		}
 		const dict = await this.shelf.getDictionaryContent(dictName);
-		const parsedDict = Parser.fromXdxf(dict);
-		console.log(parsedDict);
+		const parsedDefs = Parser.fromXdxf(dict);
+		const parsedDict: DictionaryObject = {};
+		parsedDict[dictName] = parsedDefs;
+
+		this.cachedDict[dictName] = parsedDefs;
+
 		return parsedDict;
 	}
 
 	async listen() {
 		ipcMain.handle('forgeGetDict', async (e, dictName: string) => {
-			return this.getParsedDictionaryObject(dictName);
+			return this.getDictionary(dictName);
 		});
 	}
 }
