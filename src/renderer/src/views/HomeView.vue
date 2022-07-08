@@ -28,6 +28,7 @@ import { defineComponent } from 'vue';
 import ListItem from '../components/ListItem.vue';
 import DictionaryEdit from '../components/DictionaryEdit.vue';
 import List from '../components/List.vue';
+import { useStore } from '../store/useStore';
 
 export default defineComponent({
 	data(): {
@@ -43,6 +44,7 @@ export default defineComponent({
 	async beforeMount() {
 		const data: string[] = await window.ipcRenderer.invoke('getLibrary');
 		this.library = [...data];
+		console.log('before');
 	},
 
 	methods: {

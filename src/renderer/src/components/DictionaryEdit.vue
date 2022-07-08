@@ -2,6 +2,7 @@
 	<button @click="closeDict" class="close w-full text-right">X</button>
 	<List>
 		<ListItem
+			:isEditable="true"
 			v-for="(def, word) in dictionaryData"
 			:key="word"
 			:title="word"
