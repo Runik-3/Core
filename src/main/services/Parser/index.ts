@@ -2,7 +2,7 @@
 
 export default class Parser {
 	static fromXdxf(dictContents: string) {
-		const parsedDefinitions: { [key: string]: string } = {};
+		const parsedDefinitions = new Map<string, string>();
 
 		const sanitizedString = Parser.sanitizeXdxf(dictContents);
 
@@ -18,8 +18,7 @@ export default class Parser {
 
 			word = this.removeXdxfDefinitionTags(word);
 			definition = this.removeXdxfDefinitionTags(definition);
-
-			parsedDefinitions[word] = definition;
+			parsedDefinitions.set(word, definition);
 		});
 		return parsedDefinitions;
 	}

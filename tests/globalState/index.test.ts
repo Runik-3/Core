@@ -1,28 +1,16 @@
 import { setActivePinia, createPinia } from 'pinia';
 import { useStore } from '../../src/renderer/src/store/useStore';
 
+const definitions = new Map<string, string>()
+	.set('Abessiniër', 'Abyssinian')
+	.set('Achilles', 'Achilles')
+	.set('Achilleshiel', "Achilles' heel");
+
 const dictObj = {
-	test: {
-		Abessiniër: 'Abyssinian',
-		Achilles: 'Achilles',
-		Achilleshiel: "Achilles' heel",
-		Adam: 'Adam',
-		Aden: 'Aden',
-		Adonis: 'Adonis',
-		'Adriatiese See': 'Adriatic SeaAdriatic, Adriatic SeaAdriatic',
-		Afganistan: 'Afghanistan',
-		Afghaan: 'Afghan',
-		Afghanistan: 'Afghanistan',
-		'Afghanistan, Afganistan': 'Afghanistan',
-		Afrika: 'Africa',
-		Afrikaan: 'African',
-		Afrikaans:
-			'African, Afrikaans, Afrikaans languageAfrikaans languageAfrikaans',
-		'Afrikaans, Afrikaan': 'African',
-		Afrikaner: 'Afrikaner, Afrikander',
-		'Afro-Asiaties': 'Afro-Asian',
-		'Agter-Indië': 'Indo-China',
+	meta: {
+		name: 'test',
 	},
+	definitions,
 };
 
 describe('Testing dictionary store.', () => {
@@ -43,10 +31,14 @@ describe('Testing dictionary store.', () => {
 		store.setSelectedDictionary(dictObj);
 		store.updateDefinition(
 			'test',
-			{ Abessiniër: 'Abessiniër' },
-			{ Abessinië: 'Taco' },
+			{ word: 'Abessiniër', definition: 'Abessiniër' },
+			{ word: 'Abessinië', definition: 'Taco' },
 		);
-		expect(store.getSelectedDictionary.test['Abessinië']).toBe('Taco');
-		expect(store.getSelectedDictionary.test['Abessiniër']).toBeUndefined();
+		expect(store.getSelectedDictionary.definitions.get('Abessinië')).toBe(
+			'Taco',
+		);
+		expect(
+			store.getSelectedDictionary.definitions.get('Abessiniër'),
+		).toBeFalsy();
 	});
 });

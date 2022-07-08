@@ -8,7 +8,7 @@ import type { DictionaryObject } from '../../../typings/dictionaries/dictionary'
 export default class Forge {
 	shelf: Shelf;
 
-	cachedDict: DictionaryObject = {};
+	cachedDict?: DictionaryObject;
 
 	constructor(shelf: Shelf) {
 		this.shelf = shelf;
@@ -19,17 +19,19 @@ export default class Forge {
 	}
 
 	async getDictionary(dictName: string) {
-		if (this.cachedDict[dictName]) {
-			return this.cachedDict[dictName];
+		if (this.cachedDict?.meta.name === dictName) {
+			return this.cachedDict;
 		}
 		const dict = await this.shelf.getDictionaryContent(dictName);
 		const parsedDefs = Parser.fromXdxf(dict);
-		const parsedDict: DictionaryObject = {};
 
-		parsedDict[dictName] = parsedDefs;
-		this.cachedDict[dictName] = parsedDefs;
+		const parsedDict: DictionaryObject = {
+			meta: { name: dictName },
+			definitions: parsedDefs,
+		};
+		this.cachedDict = parsedDict;
 
-		return parsedDict[dictName];
+		return parsedDict;
 	}
 
 	async listen() {

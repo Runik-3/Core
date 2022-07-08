@@ -24,16 +24,11 @@ export const useStore = defineStore({
 			oldRecord: Definition,
 			newRecord: Definition,
 		) {
-			const oldKey = Object.keys(oldRecord)[0];
-			const newKey = Object.keys(newRecord)[0];
-
-			if (oldKey === newKey) {
-				this.selectedDictionary[dictName][newKey] = newRecord[newKey];
-				return;
-			}
-			this.selectedDictionary[dictName][newKey] = newRecord[newKey];
-			delete this.selectedDictionary[dictName][oldKey];
-			console.log(this.selectedDictionary);
+			this.selectedDictionary.definitions.delete(oldRecord.word);
+			this.selectedDictionary.definitions.set(
+				newRecord.word,
+				newRecord.definition,
+			);
 		},
 
 		alphabetizeDefinitions() {

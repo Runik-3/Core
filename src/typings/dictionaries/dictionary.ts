@@ -1,4 +1,11 @@
-export type Definition = { [key: string]: string };
+export interface Definition {
+	word: string;
+	definition: string;
+}
+
+export interface MetaData {
+	name: string;
+}
 
 // future iterations of this shape should include xdxf metadata
 /* 
@@ -15,4 +22,7 @@ export type Definition = { [key: string]: string };
   }
 }
 */
-export type DictionaryObject = { [key: string]: Definition };
+export interface DictionaryObject {
+	meta: MetaData;
+	definitions: Map<string, string>;
+}

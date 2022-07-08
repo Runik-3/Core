@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts">
-import type { DictionaryObject } from '@/typings/dictionary';
+import type { DictionaryObject } from '../../../typings/dictionaries/dictionary';
 import { defineComponent } from 'vue';
 import ListItem from '../components/ListItem.vue';
 import DictionaryEdit from '../components/DictionaryEdit.vue';

@@ -3,10 +3,10 @@
 	<List>
 		<ListItem
 			:isEditable="true"
-			v-for="(def, word) in dictionaryData"
+			v-for="[word, definition] in dictionaryData.definitions"
 			:key="word"
 			:title="word"
-			:secondary="def"
+			:secondary="definition"
 		/>
 	</List>
 </template>

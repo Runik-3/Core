@@ -7,6 +7,7 @@ describe('Parser', () => {
 			<ar><k>Achilles</k>
 			Achilles</ar>`;
 		const parsedText = Parser.sanitizeXdxf(xdxfText);
+
 		expect(parsedText).toBe(
 			'<ar><k>Abessiniër</k>Abyssinian</ar><ar><k>Achilles</k>Achilles</ar>',
 		);
@@ -16,10 +17,11 @@ describe('Parser', () => {
 		const xdxfText =
 			'<ar><k>Afrika</k>Africa</ar><ar><k>Afrikaan</k>African</ar>';
 		const parsedText = Parser.fromXdxf(xdxfText);
-		expect(parsedText).toEqual({
-			Afrika: 'Africa',
-			Afrikaan: 'African',
-		});
+
+		expect(parsedText.has('Afrika')).toBe(true);
+		expect(parsedText.has('Afrikaan')).toBe(true);
+		expect(parsedText.get('Afrika')).toBe('Africa');
+		expect(parsedText.get('Afrikaan')).toBe('African');
 	});
 
 	test('Parse around other XML tags.', () => {
@@ -33,9 +35,10 @@ describe('Parser', () => {
 		<ar><k>Achilles</k>
 		Achilles</ar>`;
 		const parsedText = Parser.fromXdxf(xdxfText);
-		expect(parsedText).toEqual({
-			Abessiniër: 'Abyssinian',
-			Achilles: 'Achilles',
-		});
+
+		expect(parsedText.has('Achilles')).toBe(true);
+		expect(parsedText.has('Abessiniër')).toBe(true);
+		expect(parsedText.get('Achilles')).toBe('Achilles');
+		expect(parsedText.get('Abessiniër')).toBe('Abyssinian');
 	});
 });
