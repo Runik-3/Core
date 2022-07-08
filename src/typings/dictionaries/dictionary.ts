@@ -1,4 +1,4 @@
-type Definition = { [key: string]: string };
+export type Definition = { [key: string]: string };
 
 // future iterations of this shape should include xdxf metadata
 /* 
