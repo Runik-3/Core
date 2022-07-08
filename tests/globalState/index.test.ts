@@ -42,9 +42,11 @@ describe('Testing dictionary store.', () => {
 		const store = useStore();
 		store.setSelectedDictionary(dictObj);
 		store.updateDefinition(
-			dictObj.test.Abessiniër,
-			dictObj.test.Abessiniër,
+			'test',
+			{ Abessiniër: 'Abessiniër' },
+			{ Abessinië: 'Taco' },
 		);
-		expect('').toBe('s');
+		expect(store.getSelectedDictionary.test['Abessinië']).toBe('Taco');
+		expect(store.getSelectedDictionary.test['Abessiniër']).toBeUndefined();
 	});
 });

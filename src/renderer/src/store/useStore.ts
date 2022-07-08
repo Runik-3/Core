@@ -9,7 +9,7 @@ import type {
 export const useStore = defineStore({
 	id: 'counter',
 	state: () => ({
-		selectedDictionary: {},
+		selectedDictionary: {} as DictionaryObject,
 	}),
 	getters: {
 		getSelectedDictionary: state => state.selectedDictionary,
@@ -19,10 +19,25 @@ export const useStore = defineStore({
 			this.selectedDictionary = selectedDict;
 		},
 
-		updateDefinition(oldRecord: Definition, newRecord: Definition) {
-			if (Object.keys(oldRecord)[0] === Object.keys(newRecord)[0]) {
-				console.log('matching');
+		updateDefinition(
+			dictName: string,
+			oldRecord: Definition,
+			newRecord: Definition,
+		) {
+			const oldKey = Object.keys(oldRecord)[0];
+			const newKey = Object.keys(newRecord)[0];
+
+			if (oldKey === newKey) {
+				this.selectedDictionary[dictName][newKey] = newRecord[newKey];
+				return;
 			}
+			this.selectedDictionary[dictName][newKey] = newRecord[newKey];
+			delete this.selectedDictionary[dictName][oldKey];
+			console.log(this.selectedDictionary);
+		},
+
+		alphabetizeDefinitions() {
+			//
 		},
 	},
 });
