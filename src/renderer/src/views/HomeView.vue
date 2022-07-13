@@ -2,7 +2,7 @@
 	<main>
 		<h1 class="font-header text-3xl font-semibold">Library</h1>
 		<!-- separate into list and list item components -->
-		<div v-if="!selectedDictionary">
+		<div v-if="!store.isDefined()">
 			<List v-if="library.length !== 0">
 				<ListItem
 					@click="getDict(dict)"
@@ -16,7 +16,7 @@
 		<div v-else>
 			<DictionaryEdit
 				@closeDict="closeDictionaryEditor"
-				:dictionaryData="selectedDictionary"
+				:dictionaryData="store.getSelectedDictionary"
 			/>
 		</div>
 	</main>
@@ -33,18 +33,17 @@ import { useStore } from '../store/useStore';
 export default defineComponent({
 	data(): {
 		library: string[];
-		selectedDictionary?: DictionaryObject;
+		store: any;
 	} {
 		return {
 			library: [],
-			selectedDictionary: undefined,
+			store: useStore(),
 		};
 	},
 
 	async beforeMount() {
 		const data: string[] = await window.ipcRenderer.invoke('getLibrary');
 		this.library = [...data];
-		console.log('before');
 	},
 
 	methods: {
@@ -57,11 +56,11 @@ export default defineComponent({
 		},
 
 		dictionaryEdit(dictData: DictionaryObject) {
-			this.selectedDictionary = dictData;
+			this.store.setSelectedDictionary(dictData);
 		},
 
 		closeDictionaryEditor() {
-			this.selectedDictionary = undefined;
+			this.store.setSelectedDictionary({});
 		},
 	},
 

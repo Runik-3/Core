@@ -7,7 +7,7 @@ import type {
 } from '../../../typings/dictionaries/dictionary';
 
 export const useStore = defineStore({
-	id: 'counter',
+	id: 'Library',
 	state: () => ({
 		selectedDictionary: {} as DictionaryObject,
 	}),
@@ -17,6 +17,13 @@ export const useStore = defineStore({
 	actions: {
 		setSelectedDictionary(selectedDict: DictionaryObject) {
 			this.selectedDictionary = selectedDict;
+		},
+
+		isDefined() {
+			if (this.selectedDictionary?.meta?.name) {
+				return true;
+			}
+			return false;
 		},
 
 		updateDefinition(
