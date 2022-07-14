@@ -1,12 +1,11 @@
 <template>
 	<button @click="closeDict" class="close w-full text-right">X</button>
 	<!-- search component -->
-	<input
-		type="text"
-		placeholder="Find Definitions"
-		v-model="searchDefs"
-		class="border border-gray-400"
-		@input="filterDefs"
+	<Search
+		placeholder="Search Definitions"
+		:isLoading="isLoading"
+		v-model="searchQuery"
+		@updateQuery="filterDefs"
 	/>
 	<List>
 		<ListItem
@@ -23,17 +22,20 @@
 import { defineComponent } from 'vue';
 import ListItem from '../components/ListItem.vue';
 import List from '../components/List.vue';
+import Search from './Search.vue';
 
 export default defineComponent({
 	props: ['dictionaryData'],
 
 	data(): {
 		dictionaryDefinitions: Map<string, string>;
-		searchDefs: string;
+		searchQuery: string;
+		isLoading: boolean;
 	} {
 		return {
 			dictionaryDefinitions: new Map(this.dictionaryData.definitions),
-			searchDefs: '',
+			searchQuery: '',
+			isLoading: false,
 		};
 	},
 
@@ -42,22 +44,45 @@ export default defineComponent({
 			this.$emit('closeDict');
 		},
 
-		filterDefs() {
-			const query = this.searchDefs;
-			this.dictionaryDefinitions = new Map(
+		isListLoading(listSize: number, renderedItems: number) {
+			console.log(listSize, renderedItems);
+			if (listSize !== renderedItems) {
+				this.isLoading = true;
+				setTimeout(() => {
+					this.isListLoading(listSize, renderedItems);
+				}, 50);
+			}
+			this.isLoading = false;
+			return;
+		},
+
+		filterDefs(query: string) {
+			this.searchQuery = query;
+			this.dictionaryDefinitions = this.filterMap;
+		},
+
+		getLiItemsInDom() {
+			return document.getElementsByTagName('li');
+		},
+	},
+
+	computed: {
+		filterMap(): Map<string, string> {
+			const filteredDefinitions = new Map(
 				[...this.dictionaryData.definitions].filter(([word, def]) => {
 					if (
-						word.toLowerCase().includes(query) ||
-						def.toLowerCase().includes(query)
+						word.toLowerCase().includes(this.searchQuery) ||
+						def.toLowerCase().includes(this.searchQuery)
 					) {
 						return def;
 					}
 				}),
 			);
+			return filteredDefinitions as Map<string, string>;
 		},
 	},
 
 	emits: ['closeDict'],
-	components: { ListItem, List },
+	components: { ListItem, List, Search },
 });
 </script>

@@ -10,8 +10,7 @@ const shelf = new Shelf();
 shelf.init();
 
 // dictionary forge backing service
-const forge = new Forge(shelf);
-forge.init();
+new Forge(shelf).init();
 
 // generator backing service
 
