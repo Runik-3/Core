@@ -3,6 +3,7 @@
 	<!-- search component -->
 	<input
 		type="text"
+		placeholder="Find Definitions"
 		v-model="searchDefs"
 		class="border border-gray-400"
 		@input="filterDefs"
@@ -43,16 +44,16 @@ export default defineComponent({
 
 		filterDefs() {
 			const query = this.searchDefs;
-			if (query.length > 3) {
-				this.dictionaryDefinitions.forEach((def, word) => {
+			this.dictionaryDefinitions = new Map(
+				[...this.dictionaryData.definitions].filter(([word, def]) => {
 					if (
-						!def.toLowerCase().includes(query.toLowerCase()) ||
-						!word.toLowerCase().includes(query.toLowerCase())
+						word.toLowerCase().includes(query) ||
+						def.toLowerCase().includes(query)
 					) {
-						this.dictionaryDefinitions.delete(word);
+						return def;
 					}
-				});
-			}
+				}),
+			);
 		},
 	},
 
