@@ -31,11 +31,13 @@ export default defineComponent({
 		dictionaryDefinitions: Map<string, string>;
 		searchQuery: string;
 		isLoading: boolean;
+		hasUnsavedChanges: boolean;
 	} {
 		return {
 			dictionaryDefinitions: new Map(this.dictionaryData.definitions),
 			searchQuery: '',
 			isLoading: false,
+			hasUnsavedChanges: false,
 		};
 	},
 

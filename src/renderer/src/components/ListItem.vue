@@ -8,6 +8,7 @@
 			</h3>
 			<span>{{ def.definition }}</span>
 		</div>
+
 		<div v-else-if="isEditable && isEditMode" class="flex flex-col w-full">
 			<input
 				type="text"
@@ -35,6 +36,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import useStore from '../store/useStore';
 
 export default defineComponent({
 	data(): {
@@ -42,6 +44,7 @@ export default defineComponent({
 			word: string;
 			definition: string;
 		};
+		store: any;
 		isEditMode: boolean;
 	} {
 		return {
@@ -49,6 +52,7 @@ export default defineComponent({
 				word: this.title,
 				definition: this.secondary,
 			},
+			store: useStore(),
 			isEditMode: false,
 		};
 	},

@@ -1,12 +1,10 @@
-/* eslint-disable no-plusplus */
-/* eslint-disable import/prefer-default-export */
 import { defineStore } from 'pinia';
 import type {
 	Definition,
 	DictionaryObject,
 } from '../../../typings/dictionaries/dictionary';
 
-export const useStore = defineStore({
+const useStore = defineStore({
 	id: 'Library',
 	state: () => ({
 		selectedDictionary: {} as DictionaryObject,
@@ -39,7 +37,16 @@ export const useStore = defineStore({
 		},
 
 		alphabetizeDefinitions() {
-			//
+			const alphaDefs = new Map(
+				[...this.selectedDictionary.definitions].sort(([a], [b]) => {
+					// TODO: when languages are supported, add locales and sensitivity
+					return a.localeCompare(b);
+				}),
+			);
+			console.log(alphaDefs);
+			this.selectedDictionary.definitions = alphaDefs;
 		},
 	},
 });
+
+export default useStore;

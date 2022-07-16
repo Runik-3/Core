@@ -1,10 +1,11 @@
 import { setActivePinia, createPinia } from 'pinia';
-import { useStore } from '../../src/renderer/src/store/useStore';
+import useStore from '../../src/renderer/src/store/useStore';
 
-const definitions = new Map<string, string>()
-	.set('Abessiniër', 'Abyssinian')
-	.set('Achilles', 'Achilles')
-	.set('Achilleshiel', "Achilles' heel");
+const definitions = new Map<string, string>([
+	['Abessiniër', 'Abyssinian'],
+	['Achilles', 'Achilles'],
+	['Achilleshiel', "Achilles' heel"],
+]);
 
 const dictObj = {
 	meta: {
@@ -40,5 +41,16 @@ describe('Testing dictionary store.', () => {
 		expect(
 			store.getSelectedDictionary.definitions.get('Abessiniër'),
 		).toBeFalsy();
+	});
+
+	test('Test sort function', async () => {
+		const store = useStore();
+		store.setSelectedDictionary(dictObj);
+		store.getSelectedDictionary.definitions.set('Abc', 'abc');
+		store.alphabetizeDefinitions();
+		const storeDefs = store.selectedDictionary.definitions;
+
+		console.log(storeDefs);
+		expect(storeDefs.entries().next().value).toEqual(['Abc', 'abc']);
 	});
 });

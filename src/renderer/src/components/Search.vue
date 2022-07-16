@@ -7,7 +7,6 @@
 		@input="inputHandler"
 		:isLoading="isLoading"
 	/>
-	{{ isLoading }}
 </template>
 
 <script lang="ts">
