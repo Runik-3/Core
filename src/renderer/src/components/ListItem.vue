@@ -35,10 +35,13 @@
 </template>
 
 <script lang="ts">
+import type { Definition } from '@/typings/dictionaries/dictionary';
 import { defineComponent } from 'vue';
 import useStore from '../store/useStore';
+import isEqual from 'lodash/isEqual';
 
 export default defineComponent({
+	props: ['title', 'secondary', 'isEditable'],
 	data(): {
 		def: {
 			word: string;
@@ -63,11 +66,20 @@ export default defineComponent({
 		},
 
 		saveChangesToDefinition() {
-			console.log('props: ' + this.title + this.secondary);
-			console.log('changes: ' + this.def.word + this.def.definition);
+			const oldRecord: Definition = {
+				word: this.title,
+				definition: this.secondary,
+			};
+			const newRecord: Definition = {
+				word: this.def.word,
+				definition: this.def.definition,
+			};
+
+			if (!isEqual(oldRecord, newRecord)) {
+				this.$emit('addToUnsavedChanges', { oldRecord, newRecord });
+			}
 		},
 	},
-
-	props: ['title', 'secondary', 'isEditable'],
+	emits: ['addToUnsavedChanges'],
 });
 </script>

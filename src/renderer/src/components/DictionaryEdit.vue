@@ -9,6 +9,7 @@
 	/>
 	<List>
 		<ListItem
+			@addToUnsavedChanges="addToUnsavedChanges"
 			:isEditable="true"
 			v-for="[word, definition] in dictionaryDefinitions"
 			:key="word"
@@ -16,6 +17,7 @@
 			:secondary="definition"
 		/>
 	</List>
+	<button @click="saveChangesToDictionary">Save</button>
 </template>
 
 <script lang="ts">
@@ -23,6 +25,7 @@ import { defineComponent } from 'vue';
 import ListItem from '../components/ListItem.vue';
 import List from '../components/List.vue';
 import Search from './Search.vue';
+import type { UpdatedRecord } from '@/typings/dictionaries/dictionary';
 
 export default defineComponent({
 	props: ['dictionaryData'],
@@ -31,31 +34,32 @@ export default defineComponent({
 		dictionaryDefinitions: Map<string, string>;
 		searchQuery: string;
 		isLoading: boolean;
-		hasUnsavedChanges: boolean;
+		unsavedChanges: { [key: string]: UpdatedRecord };
 	} {
 		return {
 			dictionaryDefinitions: new Map(this.dictionaryData.definitions),
 			searchQuery: '',
 			isLoading: false,
-			hasUnsavedChanges: false,
+			unsavedChanges: {},
 		};
 	},
 
 	methods: {
-		closeDict() {
-			this.$emit('closeDict');
+		saveChangesToDict() {},
+
+		addToUnsavedChanges(definitionUpdate: UpdatedRecord) {
+			this.unsavedChanges[definitionUpdate.oldRecord.word] =
+				definitionUpdate;
+			console.log(this.unsavedChanges);
 		},
 
-		isListLoading(listSize: number, renderedItems: number) {
-			console.log(listSize, renderedItems);
-			if (listSize !== renderedItems) {
-				this.isLoading = true;
-				setTimeout(() => {
-					this.isListLoading(listSize, renderedItems);
-				}, 50);
+		closeDict() {
+			if (this.unsavedChanges === {}) {
+				this.$emit('closeDict');
+				return;
 			}
-			this.isLoading = false;
-			return;
+			console.log('unsavedChanges');
+			// error popup 'you have unsaved changes do you want to cancel or continue?'
 		},
 
 		filterDefs(query: string) {

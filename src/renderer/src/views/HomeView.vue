@@ -13,6 +13,7 @@
 			</List>
 			<p v-else>nothing here</p>
 		</div>
+		<!-- send to forge via router -->
 		<div v-else>
 			<DictionaryEdit
 				@closeDict="closeDictionaryEditor"

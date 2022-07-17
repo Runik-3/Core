@@ -24,11 +24,7 @@ const useStore = defineStore({
 			return false;
 		},
 
-		updateDefinition(
-			dictName: string,
-			oldRecord: Definition,
-			newRecord: Definition,
-		) {
+		updateDefinition(oldRecord: Definition, newRecord: Definition) {
 			this.selectedDictionary.definitions.delete(oldRecord.word);
 			this.selectedDictionary.definitions.set(
 				newRecord.word,

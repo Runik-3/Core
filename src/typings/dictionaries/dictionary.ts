@@ -3,6 +3,11 @@ export interface Definition {
 	definition: string;
 }
 
+export interface UpdatedRecord {
+	oldRecord: Definition;
+	newRecord: Definition;
+}
+
 export interface MetaData {
 	name: string;
 }
